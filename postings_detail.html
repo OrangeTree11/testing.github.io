@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ posting.title }}</title>
+    <style>
+        .stored_image {
+            max-width: 70px;
+            max-height: 70px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{posting.title}}</h1>
+    <div>
+        업무 설명: {{posting.description}}
+        <br>
+        결과:
+        {% if images %}
+            <ul>
+                {% for image in posting.images.all %}
+                    {% if forloop.counter <= posting.quantity %}
+                        <li>
+                            <img src="{{ image.image.url }}" class="stored_image">
+                            <p>{% if image.description %}{{ image.description }}{% else %}아직 입력되지 않았습니다{% endif %}</p>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="export">엑셀로 저장하기</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
